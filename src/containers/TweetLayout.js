@@ -34,7 +34,6 @@ class TweetLayout extends React.Component {
   render() {
     return (
       <div className="tweet-layout">
-        <Button onClick={() => console.log("Hello")}>hello</Button>
         <h1 className="text-center">Post your next tweet</h1>
         <InputTextArea handleSubmit={this.handleSubmit} />
         <Feed />
