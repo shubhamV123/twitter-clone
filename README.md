@@ -34,3 +34,5 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 3. Better code structure
 4. Unit test cases
 5. Signout functionality
+6. Login handle
+7. Loader to visualize better

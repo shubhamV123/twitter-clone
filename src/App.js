@@ -7,7 +7,7 @@ class App extends React.Component {
   render() {
     return (
       <Router>
-        <Route path="/" component={Login} />
+        <Route path="/" exact component={Login} />
         <PrivateRoute path="/protected" component={TweetLayout} />
       </Router>
     );
