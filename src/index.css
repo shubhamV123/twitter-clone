@@ -11,3 +11,20 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.tweet-layout {
+  width: 650px;
+  margin: 0 auto;
+}
+.text-center {
+  text-align: center;
+}
+.float-right {
+  float: right;
+}
+.m-1 {
+  margin: 1em;
+}
+.mt-1 {
+  margin-top: 1em;
+}
