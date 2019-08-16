@@ -2,7 +2,6 @@ import React from "react";
 import InputTextArea from "../components/InputTextArea";
 import Feed from "../components/Feed";
 import firebase from "../config/firebase";
-import { Button } from "antd";
 const db = firebase.firestore();
 
 class TweetLayout extends React.Component {
