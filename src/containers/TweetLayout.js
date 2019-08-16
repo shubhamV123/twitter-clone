@@ -6,12 +6,6 @@ import { Button } from "antd";
 const db = firebase.firestore();
 
 class TweetLayout extends React.Component {
-  constructor(props) {
-    super(props);
-    console.log(db);
-    console.log(firebase.auth().currentUser);
-  }
-
   handleSubmit = val => {
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {

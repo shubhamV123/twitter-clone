@@ -5,70 +5,51 @@ import firebase from "../config/firebase";
 
 const db = firebase.firestore();
 
-const data = [
-  {
-    author: "Han Solo",
-    avatar: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-    content: (
-      <p>
-        We supply a series of design principles, practical patterns and high
-        quality design resources (Sketch and Axure), to help people create their
-        product prototypes beautifully and efficiently.
-      </p>
-    ),
-    datetime: (
-      <Tooltip
-        title={moment()
-          .subtract(1, "days")
-          .format("YYYY-MM-DD HH:mm:ss")}
-      >
-        <span>
-          {moment()
-            .subtract(1, "days")
-            .fromNow()}
-        </span>
-      </Tooltip>
-    )
-  },
-  {
-    actions: [<span key="comment-list-reply-to-0">Reply to</span>],
-    author: "Han Solo",
-    avatar: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-    content: (
-      <p>
-        We supply a series of design principles, practical patterns and high
-        quality design resources (Sketch and Axure), to help people create their
-        product prototypes beautifully and efficiently.
-      </p>
-    ),
-    datetime: (
-      <Tooltip
-        title={moment()
-          .subtract(2, "days")
-          .format("YYYY-MM-DD HH:mm:ss")}
-      >
-        <span>
-          {moment()
-            .subtract(2, "days")
-            .fromNow()}
-        </span>
-      </Tooltip>
-    )
-  }
-];
-
 class Feed extends React.Component {
   state = {
     items: [],
-    loading: true
+    loading: true,
+    user: {}
   };
   componentDidMount() {
-    this.fetchFeed();
+    this.manageUser();
   }
+
+  manageUser = () => {
+    firebase.auth().onAuthStateChanged(async user => {
+      if (user) {
+        // let userIs = db.collection('users')
+        // let activeRef = await userIs.where('email', '==', user.email).get();
+        // let followers = [];
+        // console.log(activeRef.docs.length)
+        // activeRef.docs.forEach(doc => console.log(doc.data())));
+        // User is signed in.
+        this.setState(
+          {
+            user: {
+              email: user.email
+              // follower: followers
+            }
+          },
+          () => {
+            this.fetchFeed();
+          }
+        );
+      }
+    });
+  };
   fetchFeed = () => {
-    db.collection("tweets")
-      .orderBy("created", "asc")
-      .onSnapshot(snapshot => {
+    console.log(this.state);
+    let query = db.collection("tweets");
+    // query = query.where("email", "==", this.state.user.email)
+    // db.collection("tweets")
+    //     .where("email", "==", this.state.user.email)
+    // this.state.user.follower.forEach(data => {
+    //     console.log("Data", data);
+    //     return query.where(`email.${data}`, "==", true);
+    // })
+    query.orderBy("created", "asc").onSnapshot(
+      snapshot => {
         let oldArr = [];
         snapshot.docs.forEach(doc => {
           let items = doc.data();
@@ -90,7 +71,12 @@ class Feed extends React.Component {
         });
 
         this.setState({ items: oldArr, loading: false });
-      });
+      },
+      function(error) {
+        //...
+        console.log("Erro", error);
+      }
+    );
   };
   render() {
     if (this.state.loading) return <div>Loading...</div>;
